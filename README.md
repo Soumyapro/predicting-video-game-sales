@@ -18,7 +18,7 @@ This dataset is heavily incomplete, and that materially limits what any model bu
 | `release_date` | 7,051 | ~11% |
 | `developer` | 17 | <1% |
 
-`critic_score` in particular is missing for roughly 9 in 10 rows, meaning the majority of values that feature contributes to the model are median-imputed, not real reviews. This isn't disclosed anywhere in the original data description — it only shows up once you check `.isna().sum()` yourself. Any model performance numbers below should be read with that in mind: the ceiling on achievable accuracy is capped by how much of the input signal is real versus filled-in.
+`critic_score` in particular is missing for roughly 9 in 10 rows, meaning the majority of values that feature contributes to the model are median-imputed, not real reviews. This isn't disclosed anywhere in the original data description - it only shows up once you check `.isna().sum()` yourself. Any model performance numbers below should be read with that in mind: the ceiling on achievable accuracy is capped by how much of the input signal is real versus filled-in.
 
 ## Preprocessing
 
@@ -29,7 +29,7 @@ This dataset is heavily incomplete, and that materially limits what any model bu
 
 ## Feature leakage — the mistake this project deliberately avoids
 
-An earlier version of this analysis (following a common tutorial pattern) used the four regional sales columns (`na_sales`, `jp_sales`, `pal_sales`, `other_sales`) as *predictors* of `total_sales`. Since `total_sales` is the arithmetic sum of those four columns, that setup isn't prediction — it's the model learning addition, and it produces a misleadingly high R² (~0.996) that reflects nothing about real predictive power.
+An earlier version of this analysis (following a common tutorial pattern) used the four regional sales columns (`na_sales`, `jp_sales`, `pal_sales`, `other_sales`) as *predictors* of `total_sales`. Since `total_sales` is the arithmetic sum of those four columns, that setup isn't prediction - it's the model learning addition, and it produces a misleadingly high R² (~0.996) that reflects nothing about real predictive power.
 
 This project excludes all four regional sales columns from the feature set. The model predicts `total_sales` using only information available **before** a game's commercial performance is known: `critic_score`, `console`, `genre`, `publisher_grouped`, `developer_grouped`, `release_year`.
 
@@ -50,7 +50,7 @@ An R² of ~0.34 is modest, not broken. It reflects two honest limits: the featur
 
 - Heavy imputation in `critic_score` and `total_sales` caps how much this model can be trusted as a predictor of real-world outcomes.
 - Publisher/developer grouping means ~14–20% of rows fall into an `"Other"` or effectively-unknown bucket, diluting that feature's signal.
-- No marketing, franchise, or platform install-base data — all known strong drivers of game sales — are present in this dataset.
+- No marketing, franchise, or platform install-base data - all known strong drivers of game sales — are present in this dataset.
 
 ## Possible next steps
 
